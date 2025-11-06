@@ -16,3 +16,7 @@ body {
 .active hr{
     @apply block
 }
+
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
