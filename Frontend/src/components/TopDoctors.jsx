@@ -6,7 +6,7 @@ const TopDoctors = () => {
     const navigate=useNavigate();
     const doctors=useContext(AppContext)
   return (
-    <div className='flex flex-col gap-4 text-gray-900 items-center justify-center my-32 md:mx-10'>
+    <div className='flex flex-col gap-4 text-gray-900 items-center justify-center mt-32 mb-24 md:mx-10'>
         <h1 className='text-3xl font-medium'>Top Doctors to Book </h1>
         <p className='text-sm font-normal w-1/3 text-center'> Simply browse through our extensive list of trusted doctors.</p>
         <div className='w-full flex items-center justify-center flex-wrap gap-4 pt-5 gap-y-6 px-3 sm:px-0'>
@@ -28,11 +28,12 @@ const TopDoctors = () => {
                 </Link>
                 
             ))}
-            <button onClick={()=>{
+            
+        </div>
+        <button onClick={()=>{
                 navigate('/doctors');
                 scrollTo(0,0);
             }} className='mt-8 px-8 py-3 bg-blue-100 text-gray-500 rounded-4xl'>more</button>
-        </div>
     </div>
   )
 }
