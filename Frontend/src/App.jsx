@@ -11,6 +11,7 @@ import Profile from './pages/Profile'
 import Signup from './pages/Signup'
 import Appoontment from './pages/Appoontment'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
       <Route path='/appointment/:d_id' element={<Appoontment/>}/>
 
     </Routes>
+    <Footer/>
     
     </div>
   )
