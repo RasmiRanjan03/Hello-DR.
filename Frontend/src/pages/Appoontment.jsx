@@ -125,7 +125,7 @@ const getAvailableSlotes=()=>{
         <div className='w-full flex items-center  flex-wrap gap-4 pt-5 gap-y-6 px-3 sm:px-0'>
             {doctors.filter(x=>x.speciality==doc.speciality && x._id!=doc._id).map((item,index)=>(
                 <Link 
-                  key={item._id} 
+                  key={item._id} onClick={() => window.scrollTo(0, 0)}
                   to={`/appointment/${item._id}`}
                   className='cursor-pointer rounded-2xl border border-blue-200 w-54 overflow-hidden hover:-translate-y-2.5 transition-all duration-400'
                 >
