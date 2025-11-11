@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 const Doctors = () => {
   const {specialize}=useParams();
   const [docfilter, setdocfilter] = useState([])
-  const doctors=useContext(AppContext);
+  const {doctors}=useContext(AppContext);
   const navigate=useNavigate();
   
   

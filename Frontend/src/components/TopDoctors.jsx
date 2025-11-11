@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { AppContext } from '../context/AppContextProvider';
 const TopDoctors = () => {
     const navigate=useNavigate();
-    const doctors=useContext(AppContext)
+    const {doctors}=useContext(AppContext)
   return (
     <div className='flex flex-col gap-4 text-gray-900 items-center justify-center mt-32 mb-24 md:mx-10'>
         <h1 className='text-3xl font-medium'>Top Doctors to Book </h1>
