@@ -7,6 +7,7 @@ const Login = () => {
   const [password, setpassword] = useState('')
   const onSubmitHandler = async (event) => {
     event.preventDefault()
+    console.log({gmail,name,password})
 
   }
 

@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 const Navbar = () => {
   const Navigate=useNavigate();
   const [ShowMenu, setShowMenu] = useState(false)
-  const [token, settoken] = useState(false)
+  const [token, settoken] = useState(true)
   return (
     <div className='flex justify-between items-center py-4 border-b border-b-gray-400'>
       <div className='flex items-center gap-2 '>
