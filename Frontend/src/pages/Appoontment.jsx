@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContextProvider'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { assets } from '../assets/assets_frontend/assets'
 
 const Appoontment = () => {
+  const navigate=useNavigate()
   const {docId}=useParams()
   const {doctors,currencySymbol}=useContext(AppContext)  
   const dates=['SUN','MON','TUE','WED','THU','FRI','SAT']
@@ -116,7 +117,10 @@ const getAvailableSlotes=()=>{
               }
                 </div>
             
-            <button className='bg-[#5F6FFF] text-white text-sm font-light mt-6 px-20 py-3 rounded-full'>Book an appointment</button>
+            <button onClick={()=>{
+              console.log('HI')
+              navigate('/My_appointment')
+            }} className='bg-[#5F6FFF] cursor-pointer text-white text-sm font-light mt-6 px-20 py-3 rounded-full'>Book an appointment</button>
         </div>
       </div>
       <div className='mt-20'>
