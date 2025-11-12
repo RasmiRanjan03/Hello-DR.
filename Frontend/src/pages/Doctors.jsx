@@ -31,15 +31,15 @@ const Doctors = () => {
   return (
     <div className='mt-5'>
       <p className='text-gray-700'>Browse through the doctors specialist.</p>
-      <div className='flex '>
+      <div className='flex flex-col md:flex-row '>
         <div className='w-1/6 pt-5 gap-y-6 px-3 sm:px-0'>
           <ul className='text-sm flex flex-col gap-5'>
-            <li onClick={()=>specialize==='General physician'?navigate('/doctors'):navigate('/doctors/General physician')} className={`cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='General physician'?'bg-blue-50': ''}`}>General physician</li>
-            <li onClick={()=>specialize==='Gynecologist'?navigate('/doctors'):navigate('/doctors/Gynecologist')} className={`cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Gynecologist'?'bg-blue-50':''} `}>Gynecologist</li>
-            <li onClick={()=>specialize==='Dermatologist'?navigate('/doctors'):navigate('/doctors/Dermatologist')} className={`cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Dermatologist'?'bg-blue-50':''}` }>Dermatologist</li>
-            <li onClick={()=>specialize==='Pediatricians'?navigate('/doctors'):navigate('/doctors/Pediatricians')} className={`cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Pediatricians'?'bg-blue-50':''}`}>Pediatricians</li>
-            <li onClick={()=>specialize==='Neurologist'?navigate('/doctors'):navigate('/doctors/Neurologist')} className={`cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Neurologist'?'bg-blue-50':''}`}>Neurologist</li>
-            <li onClick={()=>specialize==='Gastroenterologist'?navigate('/doctors'):navigate('/doctors/Gastroenterologist')} className={`cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Gastroenterologist'?'bg-blue-50':''}`}>Gastroenterologist</li>
+            <li onClick={()=>specialize==='General physician'?navigate('/doctors'):navigate('/doctors/General physician')} className={` m-auto md:m-0 cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='General physician'?'bg-blue-50': ''}`}>General physician</li>
+            <li onClick={()=>specialize==='Gynecologist'?navigate('/doctors'):navigate('/doctors/Gynecologist')} className={`m-auto md:m-0 cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Gynecologist'?'bg-blue-50':''} `}>Gynecologist</li>
+            <li onClick={()=>specialize==='Dermatologist'?navigate('/doctors'):navigate('/doctors/Dermatologist')} className={`m-auto md:m-0 cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Dermatologist'?'bg-blue-50':''}` }>Dermatologist</li>
+            <li onClick={()=>specialize==='Pediatricians'?navigate('/doctors'):navigate('/doctors/Pediatricians')} className={`m-auto md:m-0 cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Pediatricians'?'bg-blue-50':''}`}>Pediatricians</li>
+            <li onClick={()=>specialize==='Neurologist'?navigate('/doctors'):navigate('/doctors/Neurologist')} className={`m-auto md:m-0 cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Neurologist'?'bg-blue-50':''}`}>Neurologist</li>
+            <li onClick={()=>specialize==='Gastroenterologist'?navigate('/doctors'):navigate('/doctors/Gastroenterologist')} className={`m-auto md:m-0 cursor-pointer px-2.5 py-1.5 items-center rounded border border-gray-300 text-gray-600 ${specialize==='Gastroenterologist'?'bg-blue-50':''}`}>Gastroenterologist</li>
           </ul>
         </div>
         <div className='w-5/6 flex items-center justify-start ml-8 flex-wrap gap-4 pt-5 gap-y-6 px-3 sm:px-0'>

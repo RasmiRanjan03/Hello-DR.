@@ -2,48 +2,79 @@ import React, { useState } from 'react'
 import { assets } from '../assets/assets_frontend/assets'
 import { NavLink, useNavigate } from 'react-router-dom'
 const Navbar = () => {
-  const Navigate=useNavigate();
+  const Navigate = useNavigate();
   const [ShowMenu, setShowMenu] = useState(false)
   const [token, settoken] = useState(true)
+
+  const closeMenu = () => setShowMenu(false)
+
   return (
-    <div className='flex justify-between items-center py-4 border-b border-b-gray-400'>
-      <div className='flex items-center gap-2 '>
-  <img src={assets.logo} alt=""  />
-  <p className='text-blue-950 text-3xl font-medium'>Hello DR.</p>
+    <div className='flex justify-between items-center py-4 border-b border-b-gray-400 px-4 sm:px-10'>
+      <div className='flex items-center gap-2'>
+        <img src={assets.logo} alt='logo' />
+        <p className='text-blue-950 text-3xl font-medium'>Hello DR.</p>
       </div>
-      <ul className='flex items-center font-medium text-sm gap-8'>
-        <NavLink to='/'>
+      <ul className='items-center font-medium text-sm gap-8 hidden md:flex'>
+        <NavLink to='/' className={({ isActive }) => isActive ? 'text-[#5f6FFF]' : ''}>
           <li>HOME</li>
-          <hr className='h-0.5 w-3/5 bg-[#5f6FFF] m-auto rounded hidden' />
         </NavLink>
-        <NavLink to='/doctors'>
+        <NavLink to='/doctors' className={({ isActive }) => isActive ? 'text-[#5f6FFF]' : ''}>
           <li>ALL DOCTORS</li>
-          <hr className='h-0.5 w-3/5 bg-[#5f6FFF] m-auto rounded hidden' />
         </NavLink>
-        <NavLink to='/about'>
+        <NavLink to='/about' className={({ isActive }) => isActive ? 'text-[#5f6FFF]' : ''}>
           <li>ABOUT</li>
-          <hr className='h-0.5 w-3/5 bg-[#5f6FFF] m-auto rounded hidden' />
         </NavLink>
-        <NavLink to='contact'>
+        <NavLink to='/contact' className={({ isActive }) => isActive ? 'text-[#5f6FFF]' : ''}>
           <li>CONTACT</li>
-          <hr className='h-0.5 w-3/5 bg-[#5f6FFF] m-auto rounded hidden' />
         </NavLink>
       </ul>
-      {
-        token?
-          <div className='flex justify-center items-center gap-2 cursor-pointer group relative'>
-            <img src={assets.profile_pic} className='w-8 rounded-full' alt="" />
-            <img src={assets.dropdown_icon} className='w-2.5' alt="" />
-            <div className='absolute top-0 right-0 pt-16 text-base font-medium text-gary-600 z-20 hidden group-hover:block '>
+      <div className='flex items-center gap-4 ml-auto'>
+        {token ? (
+          <div className='hidden md:flex justify-center items-center gap-2 cursor-pointer group relative'>
+            <img src={assets.profile_pic} className='w-8 rounded-full' alt='profile' />
+            <img src={assets.dropdown_icon} className='w-2.5' alt='dropdown' />
+            <div className='absolute top-0 right-0 pt-16 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
               <div className='bg-stone-100 p-3 rounded min-w-48 flex flex-col justify-center'>
-                <p onClick={()=>Navigate('/profile')} className=' text-gray-600 hover:text-black'>My Profile</p>
-                <p onClick={()=>Navigate('/My_appointment')} className=' text-gray-600 hover:text-black'>My appointments</p>
-                <p onClick={()=>settoken(false)} className=' text-gray-600 hover:text-black'>Logout</p>
+                <p onClick={() => { Navigate('/profile'); closeMenu(); }} className='text-gray-600 hover:text-black cursor-pointer'>My Profile</p>
+                <p onClick={() => { Navigate('/My_appointment'); closeMenu(); }} className='text-gray-600 hover:text-black cursor-pointer'>My appointments</p>
+                <p onClick={() => settoken(false)} className='text-gray-600 hover:text-black cursor-pointer'>Logout</p>
               </div>
             </div>
           </div>
-        :<button onClick={()=>Navigate('/login')}  className='bg-indigo-400 rounded-3xl px-6 py-3 text-white text-sm'>Create account</button>
-      }
+        ) : (
+          <button onClick={() => Navigate('/login')} className='hidden md:block bg-indigo-400 rounded-3xl px-6 py-3 text-white text-sm hover:bg-indigo-500'>Create account</button>
+        )}
+        <img className='md:hidden w-6 cursor-pointer' onClick={() => setShowMenu(true)} src={assets.menu_icon} alt='menu' />
+      </div>
+      {/* Mobile Menu */}
+      <div className={`${
+        ShowMenu ? 'fixed w-full' : 'h-0 w-0'
+      } md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all duration-300`}>
+        <div className='flex justify-between items-center p-4 border-b border-b-gray-400'>
+          <img src={assets.logo} alt='logo' className='w-8' />
+          <img className='w-7 cursor-pointer' onClick={closeMenu} src={assets.cross_icon} alt='close' />
+        </div>
+        <ul className='flex flex-col gap-4 p-4'>
+          <NavLink to='/' onClick={closeMenu} className='text-lg font-medium hover:text-blue-600'>
+            Home
+          </NavLink>
+          <NavLink to='/doctors' onClick={closeMenu} className='text-lg font-medium hover:text-blue-600'>
+            All Doctors
+          </NavLink>
+          <NavLink to='/about' onClick={closeMenu} className='text-lg font-medium hover:text-blue-600'>
+            About
+          </NavLink>
+          <NavLink to='/contact' onClick={closeMenu} className='text-lg font-medium hover:text-blue-600'>
+            Contact
+          </NavLink>
+          {!token && (
+            <button onClick={() => { Navigate('/login'); closeMenu(); }} className='bg-indigo-400 rounded-3xl px-6 py-3 text-white text-sm hover:bg-indigo-500 w-full'>
+              Create account
+            </button>
+          )}
+        </ul>
+      </div>
+
     </div>
   )
 }

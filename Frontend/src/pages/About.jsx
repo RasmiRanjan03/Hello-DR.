@@ -5,7 +5,7 @@ const About = () => {
   return (
     <div>
       <div className='text-center text-2xl text-gray-500 mt-16 mb-12'>ABOUT <span className='text-black font-medium'>US</span></div>
-      <div className='flex w-full '>
+      <div className='flex w-full flex-col md:flex-row'>
         <img className='max-w-90 max-h-90' src={assets.about_image} alt="" />
         <div className='px-12 py-2 text-sm text-gray-600 max-w-[700px]'>
           <p className='my-5'>Welcome to Prescripto, your trusted partner in managing your healthcare needs conveniently and efficiently. At Prescripto, we understand the challenges individuals face when it comes to scheduling doctor appointments and managing their health records.</p>
