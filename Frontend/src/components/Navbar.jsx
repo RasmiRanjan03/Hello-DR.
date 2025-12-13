@@ -28,7 +28,7 @@ const Navbar = () => {
           <li>CONTACT</li>
         </NavLink>
       </ul>
-      <div className='flex items-center gap-4 ml-auto'>
+      <div className='flex items-center gap-4'>
         {token ? (
           <div className='hidden md:flex justify-center items-center gap-2 cursor-pointer group relative'>
             <img src={assets.profile_pic} className='w-8 rounded-full' alt='profile' />
