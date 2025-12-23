@@ -39,6 +39,7 @@ res.status(201).json({success:true,message:'Doctor added successfully'});
  catch(error){
     console.log(error);
     res.status(500).json({message:'Server Error'});
+    Ras
 }
 }
 const loginAdmin = (req, res) => {
@@ -50,10 +51,15 @@ const loginAdmin = (req, res) => {
         if (email === process.env.admin_email && password === process.env.password) {
             const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-            res.cookie('atoken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-            return res.status(200).json({ success: true, message: 'Admin logged in successfully' });
+            res.cookie('atoken', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                maxAge: 60 * 60 * 1000
+            });
+            return res.status(200).json({ success: true, message: 'Admin logged in successfully',token:token });
         } else {
-            return res.status(401).json({ success: false, message: 'Invalid Credentials' });
+            return res.status(200).json({ success: false, message: 'Invalid Credentials' });
         }
     } catch (err) {
         console.log(err);
