@@ -1,1 +1,4 @@
 @import 'tailwindcss';
+.no-resize {
+  resize: none;
+}

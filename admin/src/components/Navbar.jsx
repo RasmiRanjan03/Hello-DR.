@@ -1,14 +1,13 @@
 import React,{useContext} from 'react'
 import { assets } from '../assets/assets_admin/assets'
 import { AdminContext } from '../context/AdminContext'
+import axios from 'axios'
 
 const Navbar = () => {
 
-  const {atoken,setatoken}=useContext(AdminContext)
+  const {atoken,setatoken,logoutAdmin}=useContext(AdminContext)
   const logout=()=>{
-    atoken && setatoken('');
-    atoken && localStorage.removeItem('atoken')
-    console.log("Admin logged out successfully");
+    logoutAdmin();
   }
   return (
     <div className='flex justify-between items-center py-4 border-b border-b-gray-400 px-4 sm:px-10'>

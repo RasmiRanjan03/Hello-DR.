@@ -8,12 +8,15 @@ const addDoctor=async(req,res)=>{
     const{name,email,password,speciality,experience,degree,about,fees,address}=req.body;
     const image=req.file;
     if(!name || !email || !password || !speciality || !experience || !degree || !about  || !fees || !address || !image)
-    {res.json({success:false,message:'All fields are required'});}
+    {return res.json({success:false,message:'All fields are required'});}
     if(!validator.isEmail(email)){
-        res.json({success:false,message:'Invalid Email'});
+        return res.json({success:false,message:'Invalid Email'});
+    }
+    if(await doctormodel.findOne({email})){
+        return res.json({success:false,message:'Doctor with this email already exists'});
     }
     if(password.length<8){
-        res.json({success:false,message:'Password must be at least 6 characters'});
+        return res.json({success:false,message:'Password must be at least 6 characters'});
     }
     const salt= await bcrypt.genSalt(10);
     const hashedpassword= await bcrypt.hash(password,salt);
@@ -39,7 +42,7 @@ res.status(201).json({success:true,message:'Doctor added successfully'});
  catch(error){
     console.log(error);
     res.status(500).json({message:'Server Error'});
-    Ras
+
 }
 }
 const loginAdmin = (req, res) => {
@@ -53,8 +56,8 @@ const loginAdmin = (req, res) => {
 
             res.cookie('atoken', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                secure: false,
+                sameSite: 'lax',
                 maxAge: 60 * 60 * 1000
             });
             return res.status(200).json({ success: true, message: 'Admin logged in successfully',token:token });
@@ -66,5 +69,31 @@ const loginAdmin = (req, res) => {
         return res.status(500).json({ message: 'Server Error' });
     }
 };
+const logoutAdmin = (req, res) => {
+    res.clearCookie('atoken');
+    return res.status(200).json({ success: true, message: 'Logged out successfully' });
+};
 
-export{addDoctor,loginAdmin};
+const alldoctors=async(req,res)=>{
+    try{
+        const doctors=await doctormodel.find({}).select('-password');
+        res.status(200).json({success:true,doctors});
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({message:'Server Error'});
+    }
+}
+
+const changeavailability=async(req,res)=>{
+    try{
+        const {doctorId}=req.body;
+        const doctor=await doctormodel.findById(doctorId);
+        await doctormodel.findByIdAndUpdate(doctorId,{available:!doctor.available});
+        res.status(200).json({success:true,message:'Availability status updated'});     
+    }catch(error){
+        console.log(error);
+        res.status(500).json({message:'Server Error'});
+    }
+}
+export{addDoctor,loginAdmin,logoutAdmin,alldoctors,changeavailability};

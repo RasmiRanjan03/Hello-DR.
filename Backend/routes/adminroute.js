@@ -1,5 +1,5 @@
 import express from 'express';
-import { addDoctor,loginAdmin } from '../controllers/admincontroller.js';
+import { addDoctor,loginAdmin,logoutAdmin,alldoctors, changeavailability } from '../controllers/admincontroller.js';
 import upload from '../middleware/multer.js';
 import authAdmin from '../middleware/authadmin.js';
 
@@ -7,6 +7,11 @@ const router=express.Router();
 
 router.post('/add-doctor',authAdmin,upload.single('image'),addDoctor);
 router.post('/login-admin',upload.none(),loginAdmin);
-router.post('/protected-route',authAdmin)
+router.post('/logout-admin',logoutAdmin);
+router.post('/all-doctors',authAdmin,alldoctors);
+router.post('/change-availability',authAdmin,changeavailability)
+router.get('/check-auth', authAdmin, (req, res) => {
+	return res.status(200).json({ success: true, message: 'Authenticated' });
+});
 
 export default router;
