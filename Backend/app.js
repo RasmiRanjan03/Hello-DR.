@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 
 import connectDB  from './config/mongodb.js';
 import adminrouter  from './routes/adminroute.js';
+import userrouter from './routes/userroute.js'
 const app = express();
 
 const port = 3000;
@@ -14,16 +15,33 @@ connectCloudinary();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174"
+];
+
 app.use(cors({
-  origin: 'http://localhost:5174',
-  credentials: true,
+  origin: function (origin, callback) {
+    // allow requests with no origin (Postman, mobile apps)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 }));
+
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 }   );
 app.use('/api/admin',adminrouter);
+app.use('/user',userrouter);
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

@@ -1,13 +1,32 @@
-import React, { useState } from 'react'
-
+import React, { useContext, useState } from 'react'
+import axios from 'axios'
+import {AppContext} from '../context/AppContextProvider'
+import {toast} from "react-toastify"
 const Login = () => {
   const [name, setname] = useState('')
   const [state, setstate] = useState('signup')
   const [gmail, setgmail] = useState('')
   const [password, setpassword] = useState('')
+
+  const{backendurl}=useContext(AppContext)
   const onSubmitHandler = async (event) => {
     event.preventDefault()
-    console.log({gmail,name,password})
+    if(state=='signup'){
+      try{
+        const {data}=await axios.post(backendurl+"/user/signupuser",{gmail,name,password},{withCredentials:true})
+        if(data.success){
+          toast.success("Sign Up Successfully")
+        }
+        else{
+          toast.error(data.message)
+        }
+      }
+      catch(err){
+        console.log(err)
+        toast.error(err)
+      }
+     
+    }
 
   }
 

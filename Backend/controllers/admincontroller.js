@@ -56,6 +56,7 @@ const loginAdmin = (req, res) => {
 
             res.cookie('atoken', token, {
                 httpOnly: true,
+                path: "/api/admin",
                 secure: false,
                 sameSite: 'lax',
                 maxAge: 60 * 60 * 1000
@@ -70,7 +71,14 @@ const loginAdmin = (req, res) => {
     }
 };
 const logoutAdmin = (req, res) => {
-    res.clearCookie('atoken');
+    const token=''
+    res.cookie('atoken', token, {
+                httpOnly: true,
+                path: "/api/admin",
+                secure: false,
+                sameSite: 'lax',
+                maxAge: 60 * 60 * 1000
+            });
     return res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
 
