@@ -16,8 +16,9 @@ const navigate=useNavigate()
       try{
         const {data}=await axios.post(backendurl+"/user/signupuser",{gmail,name,password},{withCredentials:true})
         if(data.success){
-          toast.success("Sign Up Successfully")
+          
           navigate('/')
+          window.location.reload(); 
         }
         else{
           toast.error(data.message)
@@ -33,8 +34,8 @@ const navigate=useNavigate()
       try{
         const {data}=await axios.post(backendurl+"/user/loginuser",{gmail,password},{withCredentials:true})
         if(data.success){
-          toast.success("Login Successfully")
           navigate('/')
+          window.location.reload();
         }
         else{
           toast.error(data.message)

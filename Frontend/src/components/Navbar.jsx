@@ -5,31 +5,10 @@ import axios from 'axios'
 import { AppContext } from '../context/AppContextProvider'
 
 const Navbar = () => {
-  const { backendurl } = useContext(AppContext)
+  const { backendurl,token } = useContext(AppContext)
   const Navigate = useNavigate();
   const [ShowMenu, setShowMenu] = useState(false)
-  const [token, settoken] = useState(false)
-  const [tokenb, settokenb] = useState(null)
-
-  const checkAuth = async () => {
-      try {
-        const { data } = await axios.get(backendurl + "/user/authuser",
-          { withCredentials: true }
-        );
-        settokenb(data.success);
-      } catch (err) {
-        settokenb(false);
-      }
-    };
-  useEffect(() => {
-    
-    settoken(tokenb)
-    
-  }, [tokenb]);
-
-  useEffect(() => {
-    checkAuth(); 
-  }, [])
+  
   
 
   const logout = async () => {
@@ -38,7 +17,7 @@ const Navbar = () => {
     {},
     { withCredentials: true }
   );
-  checkAuth();
+
   Navigate("/login");
 };
 
