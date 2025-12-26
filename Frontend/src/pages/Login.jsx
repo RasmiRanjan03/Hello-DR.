@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {AppContext} from '../context/AppContextProvider'
 import {toast} from "react-toastify"
@@ -7,7 +8,7 @@ const Login = () => {
   const [state, setstate] = useState('signup')
   const [gmail, setgmail] = useState('')
   const [password, setpassword] = useState('')
-
+const navigate=useNavigate()
   const{backendurl}=useContext(AppContext)
   const onSubmitHandler = async (event) => {
     event.preventDefault()
@@ -16,6 +17,7 @@ const Login = () => {
         const {data}=await axios.post(backendurl+"/user/signupuser",{gmail,name,password},{withCredentials:true})
         if(data.success){
           toast.success("Sign Up Successfully")
+          navigate('/')
         }
         else{
           toast.error(data.message)
@@ -26,6 +28,22 @@ const Login = () => {
         toast.error(err)
       }
      
+    }
+    else{
+      try{
+        const {data}=await axios.post(backendurl+"/user/loginuser",{gmail,password},{withCredentials:true})
+        if(data.success){
+          toast.success("Login Successfully")
+          navigate('/')
+        }
+        else{
+          toast.error(data.message)
+        }
+      }
+      catch(err){
+        console.log(err)
+        toast.error(err)
+      }
     }
 
   }

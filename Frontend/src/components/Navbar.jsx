@@ -1,10 +1,49 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { assets } from '../assets/assets_frontend/assets'
 import { NavLink, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { AppContext } from '../context/AppContextProvider'
+
 const Navbar = () => {
+  const { backendurl } = useContext(AppContext)
   const Navigate = useNavigate();
   const [ShowMenu, setShowMenu] = useState(false)
-  const [token, settoken] = useState(true)
+  const [token, settoken] = useState(false)
+  const [tokenb, settokenb] = useState(null)
+
+  const checkAuth = async () => {
+      try {
+        const { data } = await axios.get(backendurl + "/user/authuser",
+          { withCredentials: true }
+        );
+        settokenb(data.success);
+      } catch (err) {
+        settokenb(false);
+      }
+    };
+  useEffect(() => {
+    
+    settoken(tokenb)
+    
+  }, [tokenb]);
+
+  useEffect(() => {
+    checkAuth(); 
+  }, [])
+  
+
+  const logout = async () => {
+  await axios.post(
+    backendurl + "/user/logout",
+    {},
+    { withCredentials: true }
+  );
+  checkAuth();
+  Navigate("/login");
+};
+
+
+
 
   const closeMenu = () => setShowMenu(false)
 
@@ -37,7 +76,7 @@ const Navbar = () => {
               <div className='bg-stone-100 p-3 rounded min-w-48 flex flex-col justify-center'>
                 <p onClick={() => { Navigate('/profile'); closeMenu(); }} className='text-gray-600 hover:text-black cursor-pointer'>My Profile</p>
                 <p onClick={() => { Navigate('/My_appointment'); closeMenu(); }} className='text-gray-600 hover:text-black cursor-pointer'>My appointments</p>
-                <p onClick={() => settoken(false)} className='text-gray-600 hover:text-black cursor-pointer'>Logout</p>
+                <p onClick={() => logout()} className='text-gray-600 hover:text-black cursor-pointer'>Logout</p>
               </div>
             </div>
           </div>
@@ -47,9 +86,8 @@ const Navbar = () => {
         <img className='md:hidden w-6 cursor-pointer' onClick={() => setShowMenu(true)} src={assets.menu_icon} alt='menu' />
       </div>
       {/* Mobile Menu */}
-      <div className={`${
-        ShowMenu ? 'fixed w-full' : 'h-0 w-0'
-      } md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all duration-300`}>
+      <div className={`${ShowMenu ? 'fixed w-full' : 'h-0 w-0'
+        } md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all duration-300`}>
         <div className='flex justify-between items-center p-4 border-b border-b-gray-400'>
           <img src={assets.logo} alt='logo' className='w-8' />
           <img className='w-7 cursor-pointer' onClick={closeMenu} src={assets.cross_icon} alt='close' />
