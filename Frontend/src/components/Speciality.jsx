@@ -3,7 +3,6 @@ import {specialityData} from '../assets/assets_frontend/assets'
 import { Link } from 'react-router-dom'
 
 const Speciality = () => {
-    console.log(specialityData)
   return (
     <div className='flex flex-col pt-16 justify-center items-center gap-3 '>
         <h1 className='text-3xl font-medium '>Find by Speciality</h1>

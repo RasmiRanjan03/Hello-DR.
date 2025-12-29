@@ -11,4 +11,14 @@ const changeavailability=async(req,res)=>{
     }
 }
 
-export {changeavailability}
+const getdoctors=async(req,res)=>{
+    try{
+        const doctors=await doctormodel.find({available:true}).select('-password,-email');
+        res.status(200).json({success:true,doctors});
+    }catch(error){
+        console.log(error);
+        res.status(500).json({message:'Server Error'});
+    }
+}
+
+export {changeavailability , getdoctors};

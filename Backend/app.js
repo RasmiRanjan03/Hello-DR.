@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 
 import connectDB  from './config/mongodb.js';
 import adminrouter  from './routes/adminroute.js';
+import doctorrouter from './routes/doctorroute.js';
 import userrouter from './routes/userroute.js'
 const app = express();
 
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 }   );
 app.use('/api/admin',adminrouter);
+app.use('/api/doctor',doctorrouter)
 app.use('/user',userrouter);
 
 app.listen(port, () => {

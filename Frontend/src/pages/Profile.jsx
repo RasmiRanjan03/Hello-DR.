@@ -1,19 +1,33 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { assets } from '../assets/assets_frontend/assets'
+import axios from 'axios'
+import { AppContext } from '../context/AppContextProvider'
+import { toast } from 'react-toastify'
 
 const Profile = () => {
+  const {backendurl}=useContext(AppContext)
+  const getprofiledata=async()=>{
+    const {data}=await axios.get(backendurl+'/user/profile',{withCredentials:true})
+    if(data.success)
+    {setuserData(data.user)}
+    else{
+      toast.error(data.message)
+      console.log('error in fetching profile data');
+    }
+  }
   const [userData, setuserData] = useState({
     img:assets.profile_pic,
     name:'Rasmi',
     Email:'rsahoo2023@gift.edu.in',
     phone:9827317265,
-    Address:{
+    address:{
       line1:'Gangapada , Jatani',
       line2:'Bhubaneswar Odisha 752054'
     },
     gender:'Male',
-    birthday:'2005-10-17'
+    dob:'2005-10-17'
   })
+  useEffect(()=>{getprofiledata()},[])
   const [state, setstate] = useState('edit')
   return (
 
@@ -35,17 +49,17 @@ const Profile = () => {
               <input className='bg-gray-100  font-medium max-w-60 p-0.5' type="number" onChange={e=> setuserData(prev=>({...prev,phone:e.target.value})) } name="" id="" value={userData.phone}/>:
               <p className='text-blue-500'>{userData.phone}</p>
             }
-            <p className='font-medium'>Address:</p>
+            <p className='font-medium'>address:</p>
             {state?
             <p>
-              <input type="text"  onChange={e=> setuserData(prev=>({...prev.Address,line1:e.target.value})) } name="" id="" value={userData.Address.line1}  />
+              <input type="text"  onChange={e=> setuserData(prev=>({...prev.address,line1:e.target.value})) } name="" id="" value={userData.address.line1}  />
               <br />
-              <input type="text"  onChange={e=> setuserData(prev=>({...prev.Address,line2:e.target.value})) } name="" id="" value={userData.Address.line2}  />
+              <input type="text"  onChange={e=> setuserData(prev=>({...prev.address,line2:e.target.value})) } name="" id="" value={userData.address.line2}  />
               
             </p>:
-            <p>{userData.Address.line1}
+            <p>{userData.address.line1}
             <br />
-            {userData.Address.line2}
+            {userData.address.line2}
             </p>
           }
           </div>
@@ -62,8 +76,8 @@ const Profile = () => {
               <p>Birthday</p>
               {
                 state?
-                <input type='date' onChange={e=> setuserData(prev=>({...prev,birthday:e.target.value})) } value={userData.birthday}/>:
-                <p>{userData.birthday}</p>
+                <input type='date' onChange={e=> setuserData(prev=>({...prev,dob:e.target.value})) } value={userData.dob}/>:
+                <p>{userData.dob}</p>
               }
 
             </div>

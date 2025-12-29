@@ -7,17 +7,17 @@ const registeruser = async (req, res) => {
     try {
         const { name, gmail, password } = req.body;
         if (!name || !gmail || !password) {
-            return res.status(401).json({ success: false, message: "All fields are required" })
+            return res.json({ success: false, message: "All fields are required" })
         }
         if (!validator.isEmail(gmail)) {
-            return res.status(400).json({ success: false, message: "Email is not valid" })
+            return res.json({ success: false, message: "Email is not valid" })
         }
-        if (password.lenght < 8) {
-            return res.status(400).json({ success: false, message: "password must be 6 digit" })
+        if (password.length < 8) {
+            return res.json({ success: false, message: "password must be 6 digit" })
         }
         const checkgmail = await usermodel.findOne({ email: gmail })
         if (checkgmail) {
-            return res.status(400).json({ success: false, message: "Email is already exist" })
+            return res.json({ success: false, message: "Email is already exist" })
         }
         const salt = await bcrypt.genSalt(10);
         const hashedpassword = await bcrypt.hash(password, salt);
@@ -71,4 +71,19 @@ const logoutuser = (req, res) => {
 
     return res.status(200).json({ success: true, message: 'Logged out successfully' });
 }
-export { registeruser, loginuser, logoutuser }
+const getprofile=async(req,res)=>{
+    try{
+        const token=req.cookies?.token;
+        if (!token) {
+           return res.json({ success: false, message: 'No token, authorization denied' });
+       }
+         const decode=jwt.verify(token,process.env.JWT_SECRET)
+        const user=await usermodel.findById(decode.id).select('-password');
+        if(!user)
+            return res.json({ success: false, message: 'User not found' });
+        return res.status(200).json({ success: true, user });}
+        catch(error){
+            console.log('getprofile error:', error);}
+        }
+
+export { registeruser, loginuser, logoutuser,getprofile }

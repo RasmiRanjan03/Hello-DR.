@@ -1,12 +1,28 @@
 import React, { createContext,useState,useEffect } from 'react'
-import { doctors } from '../assets/assets_frontend/assets';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 export const AppContext=createContext();
 const backendurl=import.meta.env.VITE_BACKEND_URL
 const AppContextProvider = (props) => {
 
 const currencySymbol='$'
 const [token, settoken] = useState(false)
+const [doctors, setdoctors] = useState([])
+const [isChecking, setIsChecking] = useState(true)
+
+const fetchDoctors = async () => {
+  try {
+    const { data } = await axios.get(backendurl + "/api/doctor/get-doctors");
+    if(data.success)
+    setdoctors(data.doctors);
+  else{
+    navigate('/login');
+    toast.error(data.message)
+  }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const checkAuth = async () => {
       try {
@@ -16,12 +32,17 @@ const [token, settoken] = useState(false)
         settoken(data.success);
       } catch (err) {
         settoken(false);
+      } finally {
+        setIsChecking(false);
       }
     };
- checkAuth();
+    useEffect(() => {
+      fetchDoctors(); 
+      checkAuth();
+    }, [])
 
 const value={
-  doctors,currencySymbol,backendurl,token
+  doctors,currencySymbol,backendurl,token,isChecking
 }
   return (
     <AppContext.Provider value={value}>

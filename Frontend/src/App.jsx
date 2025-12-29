@@ -12,6 +12,7 @@ import Profile from './pages/Profile'
 import Appoontment from './pages/Appoontment'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const App = () => {
   return (
@@ -26,9 +27,9 @@ const App = () => {
       <Route path='/doctors/:specialize' element={<Doctors/>}/>
       <Route path='/doctors' element={<Doctors/>}/>
       <Route path='/login' element={<Login/>}/>
-      <Route path='/My_appointment' element={<My_appointment/>}/> 
-      <Route path='/profile' element={<Profile/>}/> 
-      <Route path='/appointment/:docId' element={<Appoontment/>}/>
+      <Route path='/My_appointment' element={<ProtectedRoute><My_appointment/></ProtectedRoute>}/> 
+      <Route path='/profile' element={<ProtectedRoute><Profile/></ProtectedRoute>}/> 
+      <Route path='/appointment/:docId' element={<ProtectedRoute><Appoontment/></ProtectedRoute>}/>
 
     </Routes>
     <Footer/>
