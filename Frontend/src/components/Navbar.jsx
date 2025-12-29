@@ -5,7 +5,7 @@ import axios from 'axios'
 import { AppContext } from '../context/AppContextProvider'
 
 const Navbar = () => {
-  const { backendurl,token } = useContext(AppContext)
+  const { backendurl,token,settoken } = useContext(AppContext)
   const Navigate = useNavigate();
   const [ShowMenu, setShowMenu] = useState(false)
   
@@ -17,7 +17,7 @@ const Navbar = () => {
     {},
     { withCredentials: true }
   );
-
+  settoken(false);
   Navigate("/login");
 };
 

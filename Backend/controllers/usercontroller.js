@@ -2,6 +2,7 @@ import usermodel from '../model/usermodel.js'
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { v2 as cloudinary } from 'cloudinary';
 
 const registeruser = async (req, res) => {
     try {
@@ -85,5 +86,74 @@ const getprofile=async(req,res)=>{
         catch(error){
             console.log('getprofile error:', error);}
         }
+const userauth=(req,res)=>{
+    try{
 
-export { registeruser, loginuser, logoutuser,getprofile }
+        const token=req.cookies?.token;
+         if (!token) {
+            return res.json({ success: false, message: 'No token, authorization denied' });
+        }
+        const decode=jwt.verify(token,process.env.JWT_SECRET)
+        const data=usermodel.findOne({_id:decode})
+        if(data){
+             return res.status(200).json({ success: true, message: 'Authenticated' });
+        }
+        else{
+             return res.json({ message: 'Unauthorized Login Again' });
+        }
+    }
+    catch(error){
+        console.log('authAdmin error:', error);
+        // if token verification failed, send 401
+        if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
+            return res.json({ message: 'Invalid or expired token' });
+        }
+        return res.status(500).json({ message: 'Server Error' });
+    }
+    }
+    const updateprofile=async(req,res)=>{
+        try{
+            const token=req.cookies && req.cookies.token;
+            if (!token) {
+               return res.status(401).json({ success: false, message: 'No token, authorization denied' });
+           }
+
+                const decode=jwt.verify(token,process.env.JWT_SECRET)
+
+                // Parse incoming fields (address may be sent as JSON string)
+                let {name,dob,gender,address,phone} = req.body || {};
+                const image= req.file;
+                if (typeof address === 'string') {
+                    try {
+                        address = JSON.parse(address);
+                    } catch (e) {
+                        // leave as string if parse fails
+                    }
+                }
+
+                if(!name || !dob || !gender || !address || !phone || !image){
+                    return res.status(400).json({ success: false, message: 'All fields are required' });
+                }
+                const imageupload = await cloudinary.uploader.upload(image.path, {
+            resource_type: 'image',
+        });
+        const imageUrl = imageupload.secure_url;
+                const user = await usermodel.findByIdAndUpdate(decode.id,{
+                    name,
+                    dob,
+                    gender,
+                    address,
+                    phone,
+                    image: imageUrl
+                },{new:true})
+
+                if(!user)
+                    return res.status(404).json({ success: false, message: 'User not found' });
+
+                return res.status(200).json({ success: true, user });
+        }catch(error){
+            console.log('updateprofile error:', error && error.message ? error.message : error)
+            return res.status(500).json({ message: 'Server Error' });
+        }
+    }
+export { registeruser, loginuser, logoutuser,getprofile ,userauth,updateprofile};

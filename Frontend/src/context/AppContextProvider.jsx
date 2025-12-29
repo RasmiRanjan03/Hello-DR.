@@ -42,7 +42,7 @@ const fetchDoctors = async () => {
     }, [])
 
 const value={
-  doctors,currencySymbol,backendurl,token,isChecking
+  doctors,currencySymbol,backendurl,token,isChecking,settoken
 }
   return (
     <AppContext.Provider value={value}>

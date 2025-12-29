@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import usermodel from "../model/usermodel.js";
 
-const authuser=(req,res)=>{
+const authuser=(req,res,next)=>{
     try{
 
         const token=req.cookies?.token;
@@ -9,9 +9,9 @@ const authuser=(req,res)=>{
             return res.json({ success: false, message: 'No token, authorization denied' });
         }
         const decode=jwt.verify(token,process.env.JWT_SECRET)
-        const data=usermodel.findOne({_id:decode})
+        const data=usermodel.findOne({_id:decode.id})
         if(data){
-             return res.status(200).json({ success: true, message: 'Authenticated' });
+            return next();
         }
         else{
              return res.json({ message: 'Unauthorized Login Again' });
