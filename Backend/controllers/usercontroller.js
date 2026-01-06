@@ -122,6 +122,7 @@ const userauth=(req,res)=>{
 
                 // Parse incoming fields (address may be sent as JSON string)
                 let {name,dob,gender,address,phone} = req.body || {};
+                console.log(name,gender,dob,address)
                 const image= req.file;
                 if (typeof address === 'string') {
                     try {
@@ -132,7 +133,7 @@ const userauth=(req,res)=>{
                 }
 
                 if(!name || !dob || !gender || !address || !phone || !image){
-                    return res.status(400).json({ success: false, message: 'All fields are required' });
+                    return res.status(200).json({ success: false, message: 'All fields are required' });
                 }
                 const imageupload = await cloudinary.uploader.upload(image.path, {
             resource_type: 'image',

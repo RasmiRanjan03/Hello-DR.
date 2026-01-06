@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { assets } from '../assets/assets_frontend/assets'
 import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -8,7 +8,7 @@ const Navbar = () => {
   const { backendurl,token,settoken } = useContext(AppContext)
   const Navigate = useNavigate();
   const [ShowMenu, setShowMenu] = useState(false)
-  
+  const {userdata}=useContext(AppContext)
   
 
   const logout = async () => {
@@ -49,7 +49,7 @@ const Navbar = () => {
       <div className='flex items-center gap-4'>
         {token ? (
           <div className='hidden md:flex justify-center items-center gap-2 cursor-pointer group relative'>
-            <img src={assets.profile_pic} className='w-8 rounded-full' alt='profile' />
+            <img src={userdata.image} className='w-8 rounded-full h-8' alt='profile' />
             <img src={assets.dropdown_icon} className='w-2.5' alt='dropdown' />
             <div className='absolute top-0 right-0 pt-16 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
               <div className='bg-stone-100 p-3 rounded min-w-48 flex flex-col justify-center'>

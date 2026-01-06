@@ -9,6 +9,7 @@ const currencySymbol='$'
 const [token, settoken] = useState(false)
 const [doctors, setdoctors] = useState([])
 const [isChecking, setIsChecking] = useState(true)
+const [userdata, setuserdata] = useState()
 
 const fetchDoctors = async () => {
   try {
@@ -23,6 +24,20 @@ const fetchDoctors = async () => {
     console.log(error);
   }
 };
+  const getuserdata=async()=>{
+    try{
+      const {data}=await axios.get(backendurl+"/user/profile",{withCredentials:true})
+      if(data.success){
+        setuserdata(data.user)
+      }
+      else{
+        toast.error(data.message)
+      }
+    }
+    catch(err){
+      toast.error(err)
+    }
+  }
 
   const checkAuth = async () => {
       try {
@@ -42,7 +57,7 @@ const fetchDoctors = async () => {
     }, [])
 
 const value={
-  doctors,currencySymbol,backendurl,token,isChecking,settoken
+  doctors,currencySymbol,backendurl,token,isChecking,settoken,getuserdata,userdata,setuserdata
 }
   return (
     <AppContext.Provider value={value}>
