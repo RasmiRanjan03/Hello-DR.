@@ -45,6 +45,9 @@ const fetchDoctors = async () => {
           { withCredentials: true }
         );
         settoken(data.success);
+        if(data.success) {
+          await getuserdata();
+        }
       } catch (err) {
         settoken(false);
       } finally {
@@ -54,11 +57,16 @@ const fetchDoctors = async () => {
     useEffect(() => {
       fetchDoctors(); 
       checkAuth();
-      getuserdata();
     }, [])
+    
+    useEffect(() => {
+      if(token) {
+        getuserdata();
+      }
+    }, [token])
 
 const value={
-  doctors,currencySymbol,backendurl,token,isChecking,settoken,getuserdata,userdata,setuserdata
+  doctors,currencySymbol,backendurl,token,isChecking,settoken,getuserdata,userdata,setuserdata,fetchDoctors
 }
   return (
     <AppContext.Provider value={value}>

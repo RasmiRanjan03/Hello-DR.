@@ -1,5 +1,5 @@
 {
-  "dependencies": {
-    "baseline-browser-mapping": "^2.9.11"
+  "devDependencies": {
+    "baseline-browser-mapping": "^2.9.12"
   }
 }

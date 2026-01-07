@@ -5,10 +5,10 @@ import axios from 'axios'
 import { AppContext } from '../context/AppContextProvider'
 
 const Navbar = () => {
-  const { backendurl,token,settoken } = useContext(AppContext)
+  const { backendurl,token,settoken,userdata } = useContext(AppContext)
   const Navigate = useNavigate();
   const [ShowMenu, setShowMenu] = useState(false)
-  const {userdata}=useContext(AppContext)
+  console.log(userdata)
   
   
 
@@ -48,7 +48,7 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className='flex items-center gap-4'>
-        {token  ? (
+        {token && userdata ? (
           <div className='hidden md:flex justify-center items-center gap-2 cursor-pointer group relative'>
             <img src={userdata.image} className='w-8 rounded-full h-8' alt='profile' />
             <img src={assets.dropdown_icon} className='w-2.5' alt='dropdown' />
