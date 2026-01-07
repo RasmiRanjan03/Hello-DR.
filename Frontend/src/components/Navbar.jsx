@@ -10,6 +10,7 @@ const Navbar = () => {
   const [ShowMenu, setShowMenu] = useState(false)
   const {userdata}=useContext(AppContext)
   
+  
 
   const logout = async () => {
   await axios.post(
@@ -47,7 +48,7 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className='flex items-center gap-4'>
-        {token ? (
+        {token  ? (
           <div className='hidden md:flex justify-center items-center gap-2 cursor-pointer group relative'>
             <img src={userdata.image} className='w-8 rounded-full h-8' alt='profile' />
             <img src={assets.dropdown_icon} className='w-2.5' alt='dropdown' />

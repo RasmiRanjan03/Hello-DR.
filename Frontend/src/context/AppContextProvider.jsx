@@ -54,6 +54,7 @@ const fetchDoctors = async () => {
     useEffect(() => {
       fetchDoctors(); 
       checkAuth();
+      getuserdata();
     }, [])
 
 const value={

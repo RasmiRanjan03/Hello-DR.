@@ -3,6 +3,8 @@ import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
+import doctormodel from '../model/doctormodel.js';
+import appointment from '../model/appointmentmodel.js';
 
 const registeruser = async (req, res) => {
     try {
@@ -157,4 +159,47 @@ const userauth=(req,res)=>{
             return res.status(500).json({ message: 'Server Error' });
         }
     }
-export { registeruser, loginuser, logoutuser,getprofile ,userauth,updateprofile};
+
+    const bookappointment=async(req,res)=>{
+        try{
+            const{userId,docId,slotDate,slotTime}=req.body;
+            const docdata=await doctormodel.findOne({_id:docId}).select('-password')
+            if(!docdata.available){
+                return res.json({success:false,message:"No Doctor Found"})
+            }
+            let slots_booked=docdata.slots_booked;
+            if(slots_booked[slotDate]){
+                if(slots_booked[slotDate].includes(slotTime)){
+                    return res.json({success:false,message:"Slot is not available"})
+                }
+                else{
+                    slots_booked[slotDate].push(slotTime)
+                }
+            }
+            else{
+                slots_booked[slotDate]=[];
+                slots_booked[slotDate].push(slotTime);
+            }
+            const userdata=await usermodel.findById(userId).select("-password");
+            delete docdata.slots_booked;
+            const appointmentdata={
+                userId,
+                docId,
+                slotDate,
+                slotTime,
+                docdata,
+                userdata,
+                date:Date.now(),
+                amount:docdata.fees
+            }
+            const newappointment=new appointment(appointmentdata)
+            await newappointment.save();
+            await doctormodel.findByIdAndUpdate(docId,{slots_booked})
+            return res.json({success:true,message:"Appointment Booked Successfully"})
+
+        }catch(err){
+            console.log(err)
+            return res.json({success:false,message:err})
+        }
+    }
+export { registeruser, loginuser, logoutuser,getprofile ,userauth,updateprofile,bookappointment};
