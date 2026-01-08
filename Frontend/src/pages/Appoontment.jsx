@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 const Appoontment = () => {
   const navigate=useNavigate()
   const {docId}=useParams()
-  const {doctors,currencySymbol,fetchDoctors,backendurl,userdata}=useContext(AppContext)  
+  const {doctors,currencySymbol,backendurl,userdata}=useContext(AppContext)  
   const dates=['SUN','MON','TUE','WED','THU','FRI','SAT']
 
   const [doc, setdoc] = useState(null)
@@ -25,9 +25,9 @@ const Appoontment = () => {
 const getAvailableSlotes=()=>{
   if(!doc) return
   console.log(doc)
-  setdocSlots([])
   let today=new Date()
   let startDay = today.getHours() >= 21 ? 1 : 0
+  let allSlots = []
   for (let i=startDay;i<startDay+7;i++){
     let currentDate=new Date(today)
     currentDate.setDate(today.getDate()+i)
@@ -36,7 +36,7 @@ const getAvailableSlotes=()=>{
     endTime.setDate(today.getDate()+i)
     endTime.setHours(21,0,0,0)
 
-    if(today.getDate() == currentDate.getDate()){
+    if(i === startDay && today.getDate() == currentDate.getDate()){
       currentDate.setHours(currentDate.getHours() > 10 ? currentDate.getHours() +1 :10)
       currentDate.setMinutes(currentDate.getMinutes()> 30? 0:30)
     }
@@ -63,8 +63,9 @@ const getAvailableSlotes=()=>{
 
       currentDate.setMinutes(currentDate.getMinutes()+30)
     }
-    setdocSlots(prev=> ([...prev ,timeSlots]))
+    allSlots.push(timeSlots)
   }
+  setdocSlots(allSlots)
 }
 
 
@@ -76,10 +77,6 @@ const getAvailableSlotes=()=>{
     if (doc) getAvailableSlotes();
   }, [doc])
 
-
-  useEffect(()=>{
-    console.log(docSlots)
-  },[docSlots])
 
 const bookappointment=async()=>{
   try{

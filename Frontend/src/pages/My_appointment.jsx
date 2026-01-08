@@ -1,17 +1,38 @@
 import React, { useContext, useEffect,useState } from 'react'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 import { AppContext } from '../context/AppContextProvider'
 
 const My_appointment = () => {
-  const {doctors,userdata,getappointments}=useContext(AppContext)
+  const {doctors,backendurl,userdata,getappointments,fetchDoctors}=useContext(AppContext)
+  const [first, setfirst] = useState(0)
   const [appointments, setappointments] = useState([])
   useEffect(() => {
     const fetchAppointments = async () => {
       const result = await getappointments();
-      setappointments(result);
+      setappointments(result.reverse());
+      fetchDoctors();
 
     };
     fetchAppointments();
-  }, [])
+  }, [first])
+  console.log(appointments)
+  const cancelappointment=async(appointmentId)=>{
+    try{
+      const {data}=await axios.post(backendurl+"/user/cancelappointment",{userId:userdata._id,appointmentId},{withCredentials:true })
+      if(data.success){
+        toast.success(data.message);
+        setfirst(first+1)
+      }
+      else{
+        toast.error(data.message);
+      }
+    }catch(err){
+      console.log(err)
+      toast.error(err)
+    }
+  
+  }
   return (
     <div className='mt-12'>
       <h1 className='my-3 text-zinc-700 text-lg'>My appointments</h1>
@@ -30,12 +51,14 @@ const My_appointment = () => {
               <p className='font-medium mt-1 text-zinc-700 '>Address:</p>
               <p>{item.docData.address.line1}</p>
               <p>{item.docData.address.line2}</p>
+              <p>{item.cancelled}</p>
               <p className='mt-1 '><span className='font-medium text-zinc-700'>Date & Time:</span> {item.slotDate} | {item.slotTime}</p>
             </div>
             <div className='flex flex-col gap-2 justify-end text-sm'>
-              <button className='hover:bg-[#5F6FFF] hover:text-white transition-all duration-300 px-8 py-2 rounded border border-gray-300'>Pay Online</button>
-              <button className='hover:bg-[#ff0000] hover:text-white transition-all duration-300 px-8 py-2 rounded border border-gray-300'>Cancel appointment</button>
-            </div>
+              {!item.cancelled && <button className='hover:bg-[#5F6FFF] hover:text-white transition-all duration-300 px-8 py-2 rounded border border-gray-300'>Pay Online</button>}
+             {!item.cancelled && <button onClick={async()=>{await cancelappointment(item._id)}} className='hover:bg-[#ff0000] hover:text-white transition-all duration-300 px-8 py-2 rounded border border-gray-300'>Cancel appointment</button>}
+             {item.cancelled && <button disabled className='bg-white text-red-700 px-8 py-2 rounded border border-red-600 cursor-not-allowed'>Appointment Cancelled</button>}
+             </div>
 
         </div>
       )))

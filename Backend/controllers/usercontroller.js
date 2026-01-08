@@ -217,4 +217,28 @@ const userauth=(req,res)=>{
             return res.json({success:false,message:"ERROR"})
         }
     }
-export { registeruser, loginuser, logoutuser,getprofile ,userauth,updateprofile,bookappointment,getappointment};
+    const cancelappointment=async(req,res)=>{
+        try{
+            const{userId,appointmentId}=req.body;
+            const appointmentdata=await appointment.findOne({_id:appointmentId});
+            if(!appointmentdata){
+                return res.json({success:false,message:"No Appointment Found"})
+            }
+            else if(appointmentdata.userId!==userId){
+                return res.json({success:false,message:"You are not authorized to cancel this appointment"})
+            }
+            else{
+                await appointment.findByIdAndUpdate(appointmentId,{cancelled:true});
+                const docdata=await doctormodel.findById(appointmentdata.docId);
+                let slots_booked=docdata.slots_booked;
+                let bookedslotsforselcteddate=slots_booked[appointmentdata.slotDate];
+                bookedslotsforselcteddate=bookedslotsforselcteddate.filter(slot=>slot!==appointmentdata.slotTime);
+                slots_booked[appointmentdata.slotDate]=bookedslotsforselcteddate;
+                await doctormodel.findByIdAndUpdate(appointmentdata.docId,{slots_booked});
+                return res.json({success:true,message:"Appointment Cancelled Successfully"})
+            }
+        }
+            catch(err){
+                console.log(err)
+            }}
+export { registeruser, loginuser, logoutuser,getprofile ,userauth,updateprofile,bookappointment,getappointment,cancelappointment};

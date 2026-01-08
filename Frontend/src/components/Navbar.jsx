@@ -8,10 +8,6 @@ const Navbar = () => {
   const { backendurl,token,settoken,userdata } = useContext(AppContext)
   const Navigate = useNavigate();
   const [ShowMenu, setShowMenu] = useState(false)
-  console.log(userdata)
-  
-  
-
   const logout = async () => {
   await axios.post(
     backendurl + "/user/logout",
