@@ -27,7 +27,8 @@ const getAvailableSlotes=()=>{
   console.log(doc)
   setdocSlots([])
   let today=new Date()
-  for (let i=0;i<7;i++){
+  let startDay = today.getHours() >= 21 ? 1 : 0
+  for (let i=startDay;i<startDay+7;i++){
     let currentDate=new Date(today)
     currentDate.setDate(today.getDate()+i)
 
