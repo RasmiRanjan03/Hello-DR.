@@ -54,6 +54,18 @@ const fetchDoctors = async () => {
         setIsChecking(false);
       }
     };
+    const getappointments=async()=>{
+      try{
+        const {data}=await axios.post(backendurl+"/user/getappointments",{userId:userdata._id},{withCredentials:true})
+        if(!data.success){
+          toast.error(data.message)}
+        else{
+          return data.appointments;
+        }
+        }
+        catch(err){
+          toast.error(err)
+        }}
     useEffect(() => {
       fetchDoctors(); 
       checkAuth();
@@ -66,7 +78,7 @@ const fetchDoctors = async () => {
     }, [token])
 
 const value={
-  doctors,currencySymbol,backendurl,token,isChecking,settoken,getuserdata,userdata,setuserdata,fetchDoctors
+  doctors,currencySymbol,backendurl,token,isChecking,settoken,getuserdata,userdata,setuserdata,fetchDoctors,getappointments
 }
   return (
     <AppContext.Provider value={value}>

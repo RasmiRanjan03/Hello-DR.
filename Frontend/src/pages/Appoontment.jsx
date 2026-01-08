@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 const Appoontment = () => {
   const navigate=useNavigate()
   const {docId}=useParams()
-  const {doctors,currencySymbol,fetchDoctors,backendurl}=useContext(AppContext)  
+  const {doctors,currencySymbol,fetchDoctors,backendurl,userdata}=useContext(AppContext)  
   const dates=['SUN','MON','TUE','WED','THU','FRI','SAT']
 
   const [doc, setdoc] = useState(null)
@@ -19,9 +19,12 @@ const Appoontment = () => {
   const getdocdata=async ()=>{
     const docInfo=doctors.find(doc=>doc._id==docId)
     setdoc(docInfo)
+    
   }
 
 const getAvailableSlotes=()=>{
+  if(!doc) return
+  console.log(doc)
   setdocSlots([])
   let today=new Date()
   for (let i=0;i<7;i++){
@@ -44,6 +47,15 @@ const getAvailableSlotes=()=>{
     let timeSlots=[]
     while(currentDate<endTime){
       let formartedTime= currentDate.toLocaleTimeString([],{hour : '2-digit', minute:'2-digit'})
+      let day= currentDate.getDate();
+      let month=currentDate.getMonth()+1;
+      let year=currentDate.getFullYear();
+      let slotDate=day+"-"+month+"-"+year;
+      let bookedSlots=doc.slots_booked;
+      if(bookedSlots[slotDate] && bookedSlots[slotDate].includes(formartedTime)){
+        currentDate.setMinutes(currentDate.getMinutes()+30)
+        continue;
+      }
       timeSlots.push({datetime:new Date(currentDate),
         time:formartedTime
       })
@@ -57,13 +69,12 @@ const getAvailableSlotes=()=>{
 
   useEffect(() => {
     getdocdata();
-  
- 
   }, [docId,doctors])
 
   useEffect(() => {
-    getAvailableSlotes()
-  }, [doctors])
+    if (doc) getAvailableSlotes();
+  }, [doc])
+
 
   useEffect(()=>{
     console.log(docSlots)
@@ -71,8 +82,7 @@ const getAvailableSlotes=()=>{
 
 const bookappointment=async()=>{
   try{
-  const userres=await axios.get(backendurl+'/user/getuserid',{withCredentials:true});
-  const userId=userres.data._id;
+  const userId=userdata._id;
   const date=docSlots[slotIndex][0].datetime;
   const day=date.getDate();
   const month=date.getMonth()+1;

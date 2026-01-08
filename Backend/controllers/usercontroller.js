@@ -65,30 +65,7 @@ const loginuser = async (req, res) => {
     
     
 }
-const getuserid=(req,res)=>{
-     try{
 
-        const token=req.cookies?.token;
-         if (!token) {
-            return res.json({ success: false, message: 'No token, authorization denied' });
-        }
-        const decode=jwt.verify(token,process.env.JWT_SECRET)
-        const data=usermodel.findOne({_id:decode.id})
-        if(data){
-            return res.json({success:true, message: 'UserId Found',_id:decode.id });
-        }
-        else{
-             return res.json({ message: 'Unauthorized Login Again' });
-        }
-    }
-    catch(error){
-        console.log('authAdmin error:', error);
-        if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
-            return res.json({ message: 'Invalid or expired token' });
-        }
-        return res.status(500).json({ message: 'Server Error' });
-    }
-}
 const logoutuser = (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
@@ -226,4 +203,18 @@ const userauth=(req,res)=>{
             return res.json({success:false,message:err})
         }
     }
-export { registeruser, loginuser, logoutuser,getprofile ,userauth,updateprofile,bookappointment,getuserid};
+    const getappointment=async(req,res)=>{
+        try{
+            const{userId}=req.body;
+            const appointments=await appointment.find({userId});
+            if(!appointments){
+                return res.json({success:false,message:"No Appointments Found"})
+            }
+            return res.json({success:true,appointments})
+        }
+        catch(err){
+            console.log(err)
+            return res.json({success:false,message:"ERROR"})
+        }
+    }
+export { registeruser, loginuser, logoutuser,getprofile ,userauth,updateprofile,bookappointment,getappointment};
