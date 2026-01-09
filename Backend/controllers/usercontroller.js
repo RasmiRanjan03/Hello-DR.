@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
 import doctormodel from '../model/doctormodel.js';
 import appointment from '../model/appointmentmodel.js';
+import razorpay from 'razorpay';
 
 const registeruser = async (req, res) => {
     try {
@@ -241,4 +242,6 @@ const userauth=(req,res)=>{
             catch(err){
                 console.log(err)
             }}
+
+   
 export { registeruser, loginuser, logoutuser,getprofile ,userauth,updateprofile,bookappointment,getappointment,cancelappointment};
