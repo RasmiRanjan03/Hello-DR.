@@ -13,7 +13,6 @@ import Doctor_list from './pages/Doctorlist.jsx';
 
 const App = () => {
   const {atoken,setatoken}=React.useContext(AdminContext)
-  console.log("hello");
   
   return atoken ? (
     <div className='bg-[#F8F9FD]'>
@@ -23,8 +22,7 @@ const App = () => {
       <div className='flex items-start'>
       <Sidebar/>
         <Routes>
-          <Route path='/' element={<>HII</>}/>
-          <Route path='/admin_dashboard' element={<Dashboard/>}/>
+          <Route path='/' element={<Dashboard/>}/>
           <Route path='/all_appointments' element={<Appointment/>}/>
           <Route path='/add_doctor' element={<Add_doctor/>}/>
           <Route path='/doctor_list' element={<Doctor_list/>}/>

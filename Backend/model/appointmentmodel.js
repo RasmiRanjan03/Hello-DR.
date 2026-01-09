@@ -8,7 +8,7 @@ const appointmentSchema=new mongoose.Schema({
     userData:{type:Object ,required:true},
     docData:{type:Object ,required:true},
     amount:{type:Number,required:true},
-    date:{type:Number,required:true},
+    date:{type:Date,required:true},
     cancelled:{type:Boolean,default:false},
     payment:{type:Boolean,default:false},
     iscompleted:{type:Boolean,default:false},

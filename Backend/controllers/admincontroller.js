@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
 import doctormodel from '../model/doctormodel.js';
 import appointment from '../model/appointmentmodel.js';
+import usermodel from '../model/usermodel.js';
 const addDoctor = async (req, res) => {
     try {
         const { name, email, password, speciality, experience, degree, about, fees, address } = req.body;
@@ -73,6 +74,7 @@ const loginAdmin = (req, res) => {
 const logoutAdmin = (req, res) => {
     res.clearCookie("atoken", {
         httpOnly: true,
+        path: "/api/admin",
         sameSite: "lax",
         secure: false
     });
@@ -118,4 +120,16 @@ const cancelappointment = async(req,res)=>{
         console.log(error);
         res.status(200).json({ success: false, message: 'Server Error' });
 }}
-export { addDoctor, loginAdmin, logoutAdmin, alldoctors,allapointments,cancelappointment };
+const dashboarddata=async(req,res)=>{
+    try{
+        const totaldoctors=await doctormodel.countDocuments();
+        const totalappointments=await appointment.find({});
+        const totalpatients=await usermodel.countDocuments();
+        const lastappointments=totalappointments.reverse().slice(0,5);
+        res.status(200).json({ success: true, data:{totaldoctors,totalappointments:totalappointments.length,totalpatients,lastappointments} });
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+}
+export { addDoctor, loginAdmin, logoutAdmin, alldoctors,allapointments,cancelappointment,dashboarddata  };

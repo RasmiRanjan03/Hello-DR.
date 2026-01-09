@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+
 export const AdminContext = createContext();
 
 const backendurl = import.meta.env.VITE_BACKEND_URL
@@ -10,6 +11,7 @@ const AdminContextProvider = (props) => {
   const [doctors, setdoctors] = useState([])
   const [atoken, setatoken] = useState(false);
   const [appointments, setappointments] = useState([])
+  const [dashdata, setdashdata] = useState(null)
 
   const getdoctor = async () => {
     try {
@@ -85,6 +87,7 @@ const AdminContextProvider = (props) => {
       if(data.success){
         toast.success(data.message);
         getappointments();
+        dashboarddata();
       }else{
         toast.error(data.message);
       }
@@ -93,13 +96,24 @@ const AdminContextProvider = (props) => {
       toast.error(err.message);
     }
   }
+  const dashboarddata=async()=>{
+    try{
+      const {data}=await axios.get(backendurl+'/api/admin/dashboarddata',{withCredentials:true})
+      if(data.success){
+        setdashdata(data.data);
+      }else{
+        toast.error(data.message)
+      }}
+      catch(err){
+        toast.error(err.message||String(err))
+      }}
 
   useEffect(() => {
     checkAuth();
   }, [atoken])
 
   const value = {
-    atoken, setatoken, backendurl, logoutAdmin, doctors, getdoctor, changeavailability,setappointments,appointments,getappointments,cancelappointment
+    atoken, setatoken, backendurl, logoutAdmin, doctors, getdoctor, changeavailability,setappointments,appointments,getappointments,cancelappointment,dashboarddata,dashdata
   }
 
   return (
