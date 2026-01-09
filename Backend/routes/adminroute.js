@@ -1,5 +1,5 @@
 import express from 'express';
-import { addDoctor,loginAdmin,logoutAdmin,alldoctors } from '../controllers/admincontroller.js';
+import { addDoctor,loginAdmin,logoutAdmin,alldoctors,allapointments, cancelappointment } from '../controllers/admincontroller.js';
 import { changeavailability } from '../controllers/doctorcontroller.js';
 import upload from '../middleware/multer.js';
 import authAdmin from '../middleware/authadmin.js';
@@ -11,6 +11,8 @@ router.post('/login-admin',upload.none(),loginAdmin);
 router.post('/logout-admin',logoutAdmin);
 router.post('/all-doctors',authAdmin,alldoctors);
 router.post('/change-availability',authAdmin,changeavailability)
+router.get('/all-appointments',authAdmin,allapointments);
+router.post('/cancel-appointment',authAdmin,cancelappointment);
 router.get('/check-auth', authAdmin, (req, res) => {
 	return res.status(200).json({ success: true, message: 'Authenticated' });
 });
