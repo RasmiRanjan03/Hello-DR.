@@ -20,5 +20,15 @@ const getdoctors=async(req,res)=>{
         res.status(500).json({message:'Server Error'});
     }
 }
+const doctorlogin=async(req,res)=>{
+    try{
+        const {email,password}=req.body;
+        const doctor=await doctormodel.findOne({email,password});
+        if(!doctor){
+            return res.status(200).json({success:false,message:'Invalid Credentials'});
+        }}catch(error){
+        console.log(error);
+        res.status(500).json({message:'Server Error'});
+    }}
 
 export {changeavailability , getdoctors};
