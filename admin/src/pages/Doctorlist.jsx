@@ -7,7 +7,7 @@ const Doctorlist = () => {
       getdoctor();
     }
   }, [atoken])
-  return (
+  return atoken && (
     <div className='m-8 text-gray-700'>
       <p className='mb-8 font-medium text-xl'>All Doctors</p>
       <div className=' flex items-center justify-start ml-8 flex-wrap gap-4 pt-5 gap-y-6 px-3 sm:px-0'>

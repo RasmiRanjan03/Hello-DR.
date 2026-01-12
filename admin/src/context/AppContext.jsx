@@ -1,8 +1,9 @@
-import { createContext } from "react";
+import { createContext ,useState} from "react";
 import { assets } from "../assets/assets_admin/assets";
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
+    const [state, setstate] = useState('Admin')
     const a = 'apple'
     const calculateage = (dob) => {
 
@@ -19,7 +20,8 @@ const AppContextProvider = (props) => {
     }
     const value = {
         assets,
-        calculateage
+        calculateage,
+        state,setstate
     }
     return (
         <AppContext.Provider value={value}>

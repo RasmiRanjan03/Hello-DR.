@@ -2,12 +2,22 @@ import React,{useContext} from 'react'
 import { assets } from '../assets/assets_admin/assets'
 import { AdminContext } from '../context/AdminContext'
 import axios from 'axios'
+import { DoctorContext } from '../context/DoctorContext'
+import { AppContext } from '../context/AppContext'
 
 const Navbar = () => {
 
   const {atoken,setatoken,logoutAdmin}=useContext(AdminContext)
+  const {logoutdoc}=useContext(DoctorContext)
+  const {state}=useContext(AppContext)
   const logout=()=>{
-    logoutAdmin();
+    console.log(state)
+    if(atoken){
+      logoutAdmin();
+    }
+    else{
+      logoutdoc();
+    }
   }
   return (
     <div className='flex justify-between items-center py-4 border-b border-b-gray-400 px-4 sm:px-10'>

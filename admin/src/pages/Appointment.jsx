@@ -4,13 +4,13 @@ import { AppContext } from '../context/AppContext.jsx';
 import { assets } from '../assets/assets_admin/assets.js';
 
 const Appointment = () => {
-  const { appointments, getappointments,cancelappointment } = useContext(AdminContext);
+  const { appointments, getappointments,cancelappointment,atoken } = useContext(AdminContext);
   const { calculateage } = useContext(AppContext);
   useEffect(() => {
     getappointments();
   }, [])
   console.log(appointments);
-  return (
+  return atoken && (
     <div className='m-8 w-full text-gray-700'>
       <p className='mb-8 font-medium text-xl'>All Appointments</p>
       <div className='bg-white border-gray-300 border  rounded test-sm max-h-[74vh] min-h-[60vh]  overflow-y-scroll'>

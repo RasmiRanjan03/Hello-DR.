@@ -1,4 +1,6 @@
 import doctormodel from "../model/doctormodel.js";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 const changeavailability=async(req,res)=>{
     try{
         const {doctorId}=req.body;
@@ -23,12 +25,57 @@ const getdoctors=async(req,res)=>{
 const doctorlogin=async(req,res)=>{
     try{
         const {email,password}=req.body;
-        const doctor=await doctormodel.findOne({email,password});
+        if(!email || !password){
+            return res.status(200).json({success:false,message:'All fields are required'});
+        }
+        const doctor=await doctormodel.findOne({email});
+
         if(!doctor){
             return res.status(200).json({success:false,message:'Invalid Credentials'});
-        }}catch(error){
+        }
+        const hashedpassword=doctor.password;
+        const ismatch=await bcrypt.compare(password,hashedpassword);
+        if(!ismatch){
+            return res.status(200).json({success:false,message:'Wrong Email or Password'});
+        }
+        const token=jwt.sign({id:doctor._id},process.env.JWT_SECRET,{expiresIn:'1d'});
+        res.cookie('dtoken', token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax',
+            maxAge: 60 * 60 * 1000
+        })
+        return res.status(200).json({success:true,message:'Login Successful'});
+    }catch(error){
         console.log(error);
-        res.status(500).json({message:'Server Error'});
+        res.status(200).json({message:'Server Error'});
     }}
-
-export {changeavailability , getdoctors};
+const logoutdoc=(req,res)=>{
+    res.clearCookie("dtoken", {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: false
+    });
+    return res.status(200).json({ success: true, message: 'Logged out successfully' });
+}
+const authdoc=async(req,res)=>{
+    try{
+        const dtoken=req.cookies?.dtoken;
+        if(!dtoken){
+            return res.json({success:false,message:"Cokiees Not found"})
+        }
+        const decode=jwt.verify(dtoken,process.env.JWT_SECRET)
+        const isfind=await doctormodel.findById(decode.id)
+        if(!isfind){
+            return res.json({success:false,message:"Not doc"})
+        }
+        else{
+            return res.json({success:true,message:"Login successfully"})
+        }
+    }
+    catch(err){
+        console.log(err)
+        return res.json({success:false,message:err})
+    }
+}
+export {changeavailability , getdoctors, doctorlogin,authdoc,logoutdoc};

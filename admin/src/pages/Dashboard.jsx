@@ -11,7 +11,7 @@ const Dashboard = () => {
       dashboarddata();
   }, []);
 
-  return (
+  return atoken && (
     <div className='m-8'>
       <div className='flex items-center justify-start gap-5'>
         <div className='bg-white border border-gray-200 flex p-4 gap-3 rounded min-w-60 items-center cursor-pointer hover:scale-105 transition-all'>

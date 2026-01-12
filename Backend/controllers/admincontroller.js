@@ -78,6 +78,12 @@ const logoutAdmin = (req, res) => {
         sameSite: "lax",
         secure: false
     });
+    res.clearCookie("dtoken", {
+        httpOnly: true,
+        path: "/api/doctor",
+        sameSite: "lax",
+        secure: false
+    });
     return res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
 

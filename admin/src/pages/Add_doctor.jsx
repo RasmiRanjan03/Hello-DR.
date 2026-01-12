@@ -63,7 +63,7 @@ const Add_doctor = () => {
         }
         //submit logic here
     }
-  return (
+  return atoken && (
     
    <form onSubmit={onSubmitHandler} className='m-8 text-gray-700'>
     <p className='mb-8 font-medium text-xl'>Add Doctor</p>

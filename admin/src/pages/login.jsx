@@ -3,12 +3,15 @@ import { AdminContext } from '../context/AdminContext'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { DoctorContext } from '../context/DoctorContext';
+import { AppContext } from '../context/AppContext';
 const Login = () => {
   const navigate=useNavigate()
-  const [state, setstate] = useState('Admin')
-  const [email, setgmail] = useState('')
+  const [email, setemail] = useState('')
   const [password, setpassword] = useState('')
+  const {state,setstate}=useContext(AppContext)
   const {setatoken,backendurl}=useContext(AdminContext)
+  const {setdtoken,dtoken,doclogin}=useContext(DoctorContext)
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     try{
@@ -27,6 +30,17 @@ const Login = () => {
           toast(data.message,{type:'error'})
           console.log("Admin login failed");
         }
+    }
+    else{
+      const response=await axios.post(backendurl+'/api/doctor/doctor-login',{email,password},{withCredentials:true});
+            if(response.data.success){
+                setdtoken(true);
+                toast.success(response.data.message)  
+            }
+            else{
+                toast.error(response.data.message)
+            }
+
     }
   }
   catch(error){
@@ -47,7 +61,7 @@ const Login = () => {
             <h1 className='text-2xl  font-semibold text-blue-500'>{state === 'Admin' ? 'Admin' : 'Doctor'}<span className='text-zinc-600'> Login</span></h1>
             </div>
           <p>Email</p>
-          <input className='border border-zinc-200 rounded p-2 w-full' onChange={(e) => setgmail(e.target.value)} type='email' value={email} />
+          <input className='border border-zinc-200 rounded p-2 w-full' onChange={(e) => setemail(e.target.value)} type='email' value={email} />
           <p>Password</p>
           <input className='border border-zinc-200 rounded p-2 w-full' onChange={(e) => setpassword(e.target.value)} type='password' value={password} />
           <button className='flex items-center justify-center bg-[#5F6FFF] text-white w-full p-2 rounded-lg' type='submit'>Login</button>
