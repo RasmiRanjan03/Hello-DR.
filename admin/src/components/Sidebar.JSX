@@ -3,13 +3,14 @@ import { useContext } from 'react'
 import { AdminContext } from '../context/AdminContext.jsx'
 import { NavLink } from 'react-router-dom'
 import { assets } from '../assets/assets_admin/assets'
-
+import { DoctorContext } from '../context/DoctorContext.jsx'
 const Sidebar = () => {
     const {atoken}=useContext(AdminContext)
-  return atoken && (
+    const {dtoken}=useContext(DoctorContext)
+  return  (
     <div className=' w-2xs bg-white  min-h-[90vh] border-r border-gray-200' >
         {
-             <ul className='text-gray-600 mt-5'>
+            atoken && <ul className='text-gray-600 mt-5'>
                 <NavLink to="/" className={({isActive})=> isActive ? 'flex items-center gap-4 bg-[#dde9ff] py-3 px-5 border-r-4 border-indigo-400' : 'flex items-center gap-4 py-3 px-5'}>
                 <img src={assets.home_icon} alt="" />
                     <p>Dashboard</p>
@@ -29,8 +30,25 @@ const Sidebar = () => {
                 
             </ul>
         }
+        {
+            dtoken && <ul className='text-gray-600 mt-5'>
+                <NavLink to="/" className={({isActive})=> isActive ? 'flex items-center gap-4 bg-[#dde9ff] py-3 px-5 border-r-4 border-indigo-400' : 'flex items-center gap-4 py-3 px-5'}>
+                <img src={assets.home_icon} alt="" />
+                    <p>Dashboard</p>
+                </NavLink>
+                <NavLink to="/appointments" className={({isActive})=> isActive ? 'flex items-center gap-4 bg-[#dde9ff] py-3 px-5 border-r-4 border-indigo-400' : 'flex items-center gap-4 py-3 px-5'}>
+                <img src={assets.appointment_icon} alt="" />
+                    <p>Appointments</p>
+                </NavLink>
+                <NavLink to="/profile" className={({isActive})=> isActive ? 'flex items-center gap-4 bg-[#dde9ff] py-3 px-5 border-r-4 border-indigo-400' : 'flex items-center gap-4 py-3 px-5'}>
+                <img src={assets.people_icon} alt="" />
+                    <p>Profile</p>
+                </NavLink>
+                
+            </ul>
+        }
     </div>
-  )
+  ) 
 }
 
 export default Sidebar

@@ -1,10 +1,10 @@
 import {React,useState,useContext} from 'react'
-import { AdminContext } from '../context/AdminContext'
+import { AdminContext } from '../../context/AdminContext'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { DoctorContext } from '../context/DoctorContext';
-import { AppContext } from '../context/AppContext';
+import { DoctorContext } from '../../context/DoctorContext';
+import { AppContext } from '../../context/AppContext';
 const Login = () => {
   const navigate=useNavigate()
   const [email, setemail] = useState('')
