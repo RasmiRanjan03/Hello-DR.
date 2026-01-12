@@ -6,13 +6,8 @@ const AppContextProvider = (props) => {
     const [state, setstate] = useState('Admin')
     const a = 'apple'
     const calculateage = (dob) => {
-
-
         const [day, month, year] = dob.split("/");
-
         const date = new Date(year, month - 1, day);
-
-
         const birthDate = new Date(date);
         const today = new Date();
         const age = today.getFullYear() - birthDate.getFullYear();

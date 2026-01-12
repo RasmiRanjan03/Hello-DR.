@@ -4,7 +4,7 @@ const authdoctor=async(req,res,next)=>{
     try{
         const dtoken=req.cookies?.dtoken;
     if(!dtoken){
-        return res.json({success:false,message:"Please Login gain"})
+        return res.json({success:false,message:"Please Login again"})
     }
     const decode=jwt.verify(dtoken,process.env.JWT_SECRET)
     const isfind=await doctormodel.findById(decode.id)

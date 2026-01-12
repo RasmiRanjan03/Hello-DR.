@@ -1,4 +1,5 @@
 import doctormodel from "../model/doctormodel.js";
+import appointment from "../model/appointmentmodel.js"
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const changeavailability=async(req,res)=>{
@@ -78,4 +79,59 @@ const authdoc=async(req,res)=>{
         return res.json({success:false,message:err})
     }
 }
-export {changeavailability , getdoctors, doctorlogin,authdoc,logoutdoc};
+const getappointment=async(req,res)=>{
+    try{
+        const dtoken=req.cookies?.dtoken;
+        const decode=jwt.verify(dtoken,process.env.JWT_SECRET)
+        const appointments=await appointment.find({docId:decode.id})
+        if(!appointments){
+            return res.status(200).jason({success:false,message:"No appointment found"})
+        }
+        return res.json({success:true,appointments})
+    }
+    catch(err){
+        console.log(err);
+        res.json({success:false,message:err})
+    }
+}
+const cancelappointment=async(req,res)=>{
+    try {
+        const { appointmentId } = req.body;
+        const appointmentdata = await appointment.findOne({ _id: appointmentId });
+        if (!appointmentdata) {
+            return res.json({ success: false, message: "No Appointment Found" })
+        }
+
+        else {
+            await appointment.findByIdAndUpdate(appointmentId, { cancelled: true });
+            const docdata = await doctormodel.findById(appointmentdata.docId);
+            let slots_booked = docdata.slots_booked;
+            let bookedslotsforselcteddate = slots_booked[appointmentdata.slotDate];
+            bookedslotsforselcteddate = bookedslotsforselcteddate.filter(slot => slot !== appointmentdata.slotTime);
+            slots_booked[appointmentdata.slotDate] = bookedslotsforselcteddate;
+            await doctormodel.findByIdAndUpdate(appointmentdata.docId, { slots_booked });
+            return res.json({ success: true, message: "Appointment Cancelled Successfully" })
+        }
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+const completeappointment=async(req,res)=>{
+    try {
+        const { appointmentId } = req.body;
+        const appointmentdata = await appointment.findOne({ _id: appointmentId });
+        if (!appointmentdata) {
+            return res.json({ success: false, message: "No Appointment Found" })
+        }
+
+        else {
+            await appointment.findByIdAndUpdate(appointmentId, { iscompleted: true });
+            return res.json({ success: true, message: "Appointment completed Successfully" })
+        }
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+export {changeavailability , getdoctors, doctorlogin,authdoc,logoutdoc,getappointment,cancelappointment,completeappointment};
