@@ -8,6 +8,7 @@ const DoctorContextProvider=(props)=>{
     const backendurl = import.meta.env.VITE_BACKEND_URL
     const [dtoken, setdtoken] = useState(null)
     const [appointments, setappointments] = useState([])
+    const [dashdata, setdashdata] = useState(false)
     const authuser=async()=>{
         try{
             const {data}=await axios.get(backendurl+'/api/doctor/authdoc',{withCredentials:true})
@@ -85,6 +86,23 @@ const DoctorContextProvider=(props)=>{
             toast.error(err)
         }
     }
+    const getdashboard=async()=>{
+        try{
+            const {data}=await axios.get(backendurl+'/api/doctor/getdashboarddata',{withCredentials:true})
+            if(data.success){
+                setdashdata(data.dashdata)
+                console.log(data.dashdata)
+
+            }
+            else{
+                toast.error(data.message)
+            }
+        }
+        catch(err){
+            console.log(err)
+            toast.error(err)
+        }
+    }
         useEffect(() => {
             authuser()
         }, [dtoken])
@@ -92,7 +110,8 @@ const DoctorContextProvider=(props)=>{
     
     const value={dtoken,setdtoken,logoutdoc,
         getappointments,appointments,
-        cancelappointment,completeappointment
+        cancelappointment,completeappointment,
+        dashdata,setdashdata,getdashboard
     }
     return (
         <DoctorContext.Provider value={value}>

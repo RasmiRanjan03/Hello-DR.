@@ -32,7 +32,7 @@ const Sidebar = () => {
         }
         {
             dtoken && <ul className='text-gray-600 mt-5'>
-                <NavLink to="/" className={({isActive})=> isActive ? 'flex items-center gap-4 bg-[#dde9ff] py-3 px-5 border-r-4 border-indigo-400' : 'flex items-center gap-4 py-3 px-5'}>
+                <NavLink to="/doc" className={({isActive})=> isActive ? 'flex items-center gap-4 bg-[#dde9ff] py-3 px-5 border-r-4 border-indigo-400' : 'flex items-center gap-4 py-3 px-5'}>
                 <img src={assets.home_icon} alt="" />
                     <p>Dashboard</p>
                 </NavLink>

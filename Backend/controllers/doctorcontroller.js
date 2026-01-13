@@ -134,4 +134,34 @@ const completeappointment=async(req,res)=>{
         console.log(err)
     }
 }
-export {changeavailability , getdoctors, doctorlogin,authdoc,logoutdoc,getappointment,cancelappointment,completeappointment};
+const getdashboarddata=async(req,res)=>{
+    try{
+        const dtoken=req.cookies?.dtoken;
+        const decode=jwt.verify(dtoken,process.env.JWT_SECRET)
+        const appointments=await appointment.find({docId:decode.id})
+        let earning=0;
+        appointments.map((iteam)=>{
+            if(iteam.iscompleted || iteam.payment){
+                earning+=iteam.amount;
+            }
+        })
+        let patients=[]
+        appointments.map((item)=>{
+            if(!patients.includes(item.userId)){
+                patients.push(item.userId)
+            }
+        })
+        const dashdata={
+            earning,
+            patients:patients.length,
+            appointment:appointments.length,
+            latest_appointment:appointments.reverse().slice(0,5)
+        }
+        res.json({success:true,dashdata})
+
+    }catch(err){
+        console.log(err)
+        res.json({success:false,message:err})
+    }
+}
+export {changeavailability , getdoctors, doctorlogin,authdoc,logoutdoc,getappointment,cancelappointment,completeappointment,getdashboarddata};

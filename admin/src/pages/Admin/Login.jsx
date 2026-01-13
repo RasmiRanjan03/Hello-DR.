@@ -35,7 +35,8 @@ const Login = () => {
       const response=await axios.post(backendurl+'/api/doctor/doctor-login',{email,password},{withCredentials:true});
             if(response.data.success){
                 setdtoken(true);
-                toast.success(response.data.message)  
+                toast.success(response.data.message)
+                navigate('/doc')  
             }
             else{
                 toast.error(response.data.message)

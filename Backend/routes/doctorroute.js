@@ -1,6 +1,6 @@
 import express from 'express';
 import { Router } from 'express';
-import { getdoctors,doctorlogin, authdoc,logoutdoc,getappointment,cancelappointment,completeappointment } from '../controllers/doctorcontroller.js';
+import { getdoctors,doctorlogin, authdoc,logoutdoc,getappointment,cancelappointment,completeappointment,getdashboarddata } from '../controllers/doctorcontroller.js';
 import authdoctor from '../middleware/authdoctor.js';
 
 const router=express.Router();
@@ -12,4 +12,5 @@ router.post('/logout-doc',authdoctor,logoutdoc);
 router.get('/getappointments',authdoctor,getappointment)
 router.post('/cancelappointment',authdoctor,cancelappointment)
 router.post('/completeappointment',authdoctor,completeappointment)
+router.get('/getdashboarddata',authdoctor,getdashboarddata)
 export default router;
