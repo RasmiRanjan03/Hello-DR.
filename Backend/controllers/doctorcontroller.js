@@ -164,4 +164,26 @@ const getdashboarddata=async(req,res)=>{
         res.json({success:false,message:err})
     }
 }
-export {changeavailability , getdoctors, doctorlogin,authdoc,logoutdoc,getappointment,cancelappointment,completeappointment,getdashboarddata};
+const getprofile=async(req,res)=>{
+    const dtoken=req.cookies?.dtoken;
+    const decode=jwt.verify(dtoken,process.env.JWT_SECRET)
+    const docdata=await doctormodel.findById(decode.id).select("-password")
+    if(!docdata){
+        return res.json({success:true,message:"Doctor Not Found"})
+    }
+    res.json({success:true,docdata})
+}
+const updateprofile=async(req,res)=>{
+    try{
+        const dtoken=req.cookies?.dtoken;
+    const decode=jwt.verify(dtoken,process.env.JWT_SECRET)
+    const {fees,address,available}=req.body;
+    await doctormodel.findByIdAndUpdate(decode.id,{fees,address,available})
+    res.json({success:true,message:"Update Successfully"})
+    }catch(error){
+        console.log(error)
+        res.json({success:false,message:"ERROR Occured"})
+    }
+}
+export {changeavailability , getdoctors, doctorlogin,authdoc,logoutdoc,getappointment,cancelappointment,completeappointment,
+    getdashboarddata,getprofile,updateprofile};
