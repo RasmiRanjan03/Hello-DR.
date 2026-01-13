@@ -19,8 +19,12 @@ const TopDoctors = () => {
                   <div><img className='bg-blue-50 w-full' src={item.image} alt={item.name} /></div>
                   <div className='m-4'>
                     <div className='flex items-center gap-4 text-green-500'>
-                      <p className='bg-green-500 w-2 h-2 rounded-full'></p>
-                      <p>Available</p>
+                     {item.available?<p className='bg-green-500 w-2 h-2 rounded-full'></p>:<p className='bg-red-500 w-2 h-2 rounded-full'></p>}
+                      
+                      {item.available?
+                    <p className=''>Available</p>:<p className='text-red-600'>Not Available</p>  
+                    }
+                      
                     </div>
                     <p className='text-lg font-medium'>{item.name}</p>
                     <h4 className='text-sm font-normal text-gray-500'>{item.speciality}</h4>
