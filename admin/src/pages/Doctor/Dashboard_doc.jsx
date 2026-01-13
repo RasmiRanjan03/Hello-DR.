@@ -15,7 +15,7 @@ const Dashboard_doc = () => {
               <img src={assets.earning_icon} alt="" />
               <div>
     
-                <p className='text-2xl font-semibold'>{dashdata?.earning}</p>
+                <p className='text-2xl font-semibold'>{dashdata?.earning} ₹</p>
                 <p className='text-sm text-gray-600'>Earning</p>
               </div>
             </div>

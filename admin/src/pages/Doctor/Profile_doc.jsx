@@ -45,7 +45,7 @@ const Profile_doc = () => {
             <p className='text-sm max-w-3xl text-gray-600 mt-1'>{profiledata.about}</p>
           </div>
           <p className='mt-3 text-gray-700'>Appointment fees:<span className='text-black'>{isedit? <input type='number' onChange={(e)=>setprofiledata(prev=>({...prev,fees:e.target.value}))} value={profiledata.fees}/> 
-          :profiledata.fees}</span></p>
+          :profiledata.fees} ₹</span></p>
           <div className='flex  py-2 gap-2'>
             <p>Address:</p>
             <p className='text-sm  gap-1.5'>

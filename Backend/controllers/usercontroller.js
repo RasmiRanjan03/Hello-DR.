@@ -138,8 +138,14 @@ const updateprofile = async (req, res) => {
             }
         }
 
-        if (!name || !dob || !gender || !address || !phone || !image) {
+        if (!name || !dob || !address || !phone) {
             return res.status(200).json({ success: false, message: 'All fields are required' });
+        }
+        if (!gender) {
+            gender = 'Not Specified';
+        }
+        if (!image) {
+            return res.status(200).json({ success: false, message: 'Image is required' });
         }
         const imageupload = await cloudinary.uploader.upload(image.path, {
             resource_type: 'image',

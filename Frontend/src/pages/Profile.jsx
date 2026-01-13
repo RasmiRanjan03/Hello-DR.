@@ -14,6 +14,10 @@ const Profile = () => {
   
   const onSubmitHandler=async(event)=>{
     if(event && event.preventDefault) event.preventDefault();
+    if(!userdata.gender){
+      toast.error('Please select a gender')
+      return
+    }
     const formdata=new FormData();
     formdata.append('name',userdata.name)
 
@@ -90,11 +94,12 @@ const Profile = () => {
             <div className='grid grid-cols-[1fr_3fr] gap-y-2 mt-3 text-neutral-700'>
               <p>Gender:</p>
               {state?
-              <select  onChange={e=> setuserdata(prev=>({...prev,gender:e.target.value})) } value={userdata.gender}>
+              <select  onChange={e=> setuserdata(prev=>({...prev,gender:e.target.value})) } value={userdata.gender || ''}>
+                <option value="">Select</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>:
-              <p>{userdata.gender}</p>}
+              <p>{userdata.gender || 'Not Specified'}</p>}
               <p>Birthday</p>
               {
                 state?
