@@ -31,7 +31,7 @@ const registeruser = async (req, res) => {
             password: hashedpassword
         })
         await newuser.save()
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: newuser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.cookie('token', token, {
             httpOnly: true,
             secure: false,

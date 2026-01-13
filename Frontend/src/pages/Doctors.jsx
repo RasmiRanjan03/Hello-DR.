@@ -56,7 +56,7 @@ const Doctors = () => {
                       <p>Available</p>
                     </div>
                     <p className='text-lg font-medium'>{item.name}</p>
-                    <h4 className='text-sm font-normal text-gray-500'>{item.speciality}</h4>
+                    <h4 className='text-sm font-normal text-gray-500'>{item.speciality} </h4>
                   </div>
                 </Link>
           ))}

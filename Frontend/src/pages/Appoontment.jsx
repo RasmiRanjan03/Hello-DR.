@@ -111,7 +111,7 @@ const bookappointment=async()=>{
         <div className='py-7 px-8 border border-gray-400 rounded-lg flex-1 '>
           <p className='text-3xl font-medium flex items-center gap-3'>{doc.name} <img className='w-5' src={assets.verified_icon} alt="" /></p>
           <div className='flex items-center gap-5 text-gray-600 '><p >{doc.degree} - {doc.speciality}</p>
-          <button className='px-2 py-0.5 rounded-full text-xs border border-gray-300'>{doc.experience}</button>
+          <button className='px-2 py-0.5 rounded-full text-xs border border-gray-300'>{doc.experience} years</button>
           </div>
           <div className='mt-3' >
             <p className='flex items-center gap-1.5 text-sm font-medium mt-3'>About <img className='w-3' src={assets.info_icon} alt="" /></p>

@@ -9,16 +9,17 @@ const Login = () => {
   const [gmail, setgmail] = useState('')
   const [password, setpassword] = useState('')
 const navigate=useNavigate()
-  const{backendurl}=useContext(AppContext)
+  const{backendurl,settoken}=useContext(AppContext)
   const onSubmitHandler = async (event) => {
     event.preventDefault()
     if(state=='signup'){
       try{
         const {data}=await axios.post(backendurl+"/user/signupuser",{gmail,name,password},{withCredentials:true})
         if(data.success){
-          
+          toast.success(data.message)
+          settoken(true)
           navigate('/')
-          window.location.reload(); 
+
         }
         else{
           toast.error(data.message)
@@ -34,8 +35,10 @@ const navigate=useNavigate()
       try{
         const {data}=await axios.post(backendurl+"/user/loginuser",{gmail,password},{withCredentials:true})
         if(data.success){
+          toast.success(data.message)
+          settoken(true)
           navigate('/')
-          window.location.reload();
+          
         }
         else{
           toast.error(data.message)

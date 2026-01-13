@@ -36,7 +36,7 @@ const Appointment = () => {
             </div>
             <p>₹{appointment.docData.fees}</p>
             {
-              appointment.cancelled?<p className='text-red-500 font-medium'>Cancelled</p>:<img onClick={()=>cancelappointment(appointment._id)} className='cursor-pointer w-10' src={assets.cancel_icon} alt="" />
+              appointment.cancelled?<p className='text-red-500 font-medium'>Cancelled</p>:appointment.iscompleted?<p className='text-green-600 font-medium' >Completed </p>:<img onClick={()=>cancelappointment(appointment._id)} className='cursor-pointer w-10' src={assets.cancel_icon} alt="" />
             }
           </div>))}
       </div>
