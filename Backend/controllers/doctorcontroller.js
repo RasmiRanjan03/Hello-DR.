@@ -18,6 +18,7 @@ const getdoctors=async(req,res)=>{
     try{
         const doctors=await doctormodel.find().select('-password,-email');
         res.status(200).json({success:true,doctors});
+        console,log("HI")
     }catch(error){
         console.log(error);
         res.status(500).json({message:'Server Error'});
