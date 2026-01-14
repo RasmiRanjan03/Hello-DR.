@@ -56,12 +56,12 @@ const loginAdmin = (req, res) => {
             const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
             res.cookie('atoken', token, {
-                httpOnly: true,
-                path: "/api/admin",
-                secure: false,
-                sameSite: 'lax',
-                maxAge: 60 * 60 * 1000
-            });
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            path:'/',
+            maxAge: 60 * 60 * 1000
+        });
             return res.status(200).json({ success: true, message: 'Admin logged in successfully', token: token });
         } else {
             return res.status(200).json({ success: false, message: 'Invalid Credentials' });
@@ -73,16 +73,16 @@ const loginAdmin = (req, res) => {
 };
 const logoutAdmin = (req, res) => {
     res.clearCookie("atoken", {
-        httpOnly: true,
-        path: "/api/admin",
-        sameSite: "lax",
-        secure: false
-    });
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            path:'/'
+        });
     res.clearCookie("dtoken", {
         httpOnly: true,
-        path: "/api/doctor",
-        sameSite: "lax",
-        secure: false
+        path: "/",
+        sameSite: "none",
+        secure: true
     });
     return res.status(200).json({ success: true, message: 'Logged out successfully' });
 };

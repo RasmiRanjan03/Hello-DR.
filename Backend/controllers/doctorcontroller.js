@@ -18,7 +18,6 @@ const getdoctors=async(req,res)=>{
     try{
         const doctors=await doctormodel.find().select('-password,-email');
         res.status(200).json({success:true,doctors});
-        console,log("HI")
     }catch(error){
         console.log(error);
         res.status(500).json({message:'Server Error'});
@@ -43,8 +42,9 @@ const doctorlogin=async(req,res)=>{
         const token=jwt.sign({id:doctor._id},process.env.JWT_SECRET,{expiresIn:'1d'});
         res.cookie('dtoken', token, {
             httpOnly: true,
-            secure: false,
-            sameSite: 'lax',
+            secure: true,
+            sameSite: "none",
+            path:'/',
             maxAge: 60 * 60 * 1000
         })
         return res.status(200).json({success:true,message:'Login Successful'});
