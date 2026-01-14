@@ -21,7 +21,6 @@ const Doctors = () => {
   }
   useEffect(() => {
     applyfilter();
-    console.log('hi');
     
     
   
