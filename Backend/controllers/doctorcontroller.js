@@ -55,8 +55,9 @@ const doctorlogin=async(req,res)=>{
 const logoutdoc=(req,res)=>{
     res.clearCookie("dtoken", {
         httpOnly: true,
-        sameSite: "lax",
-        secure: false
+            secure: true,
+            sameSite: "none",
+            path:'/'
     });
     return res.status(200).json({ success: true, message: 'Logged out successfully' });
 }
