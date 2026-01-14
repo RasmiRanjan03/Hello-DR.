@@ -21,7 +21,7 @@ const allowedOrigins = [
   "http://localhost:5174",
   "http://localhost:3000",
   "https://hello-dr-frontenf.onrender.com",
-  "https://hello-dr-admin.onrender.com"
+  "https://hello-dr-h7c3.onrender.com"
 ];
 
 app.use(cors({
