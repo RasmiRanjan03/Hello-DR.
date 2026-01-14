@@ -23,7 +23,7 @@ const Login = () => {
           console.log("Admin logged in successfully");
           
           toast("Admin logged in successfully",{type:'success'})
-          
+          navigate('/')
 
         }
         else{
